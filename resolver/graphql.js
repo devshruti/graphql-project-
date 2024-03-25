@@ -7,6 +7,7 @@ type User {
   _id: ID!
   username: String!
   email: String!
+  password: String!
   role: String!
 }
 
@@ -20,7 +21,7 @@ type Book {
 }
 
 type Mutation {
-  registerUser(username: String!, email: String!, password: String!): RegistrationResponse!
+  registerUser(username: String!, email: String!, password: String!, role: String!): RegistrationResponse!
   loginUser(email: String!, password: String!): LoginResponse!
   logoutUser(token: String!): String!
   updateBook(id: ID!, title: String, author: String, description: String, price: Float): Book

@@ -1,8 +1,9 @@
 const express = require('express');
-const { schema, resolvers } = require('./resolver/graphql');
+const { schema } = require('./resolver/graphql');
 const { connectedDB } = require("./config/db");
-const { authMiddleware } = require("./middleware/authenticate");
 const { ApolloServer } = require('apollo-server-express');
+const { resolvers: bookResolvers } = require('./resolver/bookResolver');
+const { resolvers: userResolvers } = require('./resolver/userRsolver');
 
 const app = express();
 require("dotenv").config();
@@ -19,7 +20,7 @@ app.get("/", async (req, res) => {
 
 const server = new ApolloServer({
     typeDefs: schema,
-    resolvers,
+    resolvers: [userResolvers, bookResolvers],
     context: ({ req }) => ({ user: req.user }),
 });
 
@@ -31,7 +32,6 @@ async function startServer() {
 
 startServer();
 
-app.use(authMiddleware);
 
 const port = process.env.PORT || 8080;
 app.listen(port, async () => {
